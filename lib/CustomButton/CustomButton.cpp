@@ -1,37 +1,39 @@
 #include "CustomButton.hpp"
 
-CustomButton::CustomButton(int16_t x, int16_t y, int16_t w, int16_t h, const char* label)
-    : _x(x), _y(y), _w(w), _h(h), _label(label ? label : "") {}
-
-void CustomButton::setLabel(const char* label) {
+CustomButton& CustomButton::setLabel(const char* label) {
     _label = label ? label : "";
+    return *this;
 }
 
-void CustomButton::setBounds(int16_t x, int16_t y, int16_t w, int16_t h) {
+CustomButton& CustomButton::setBounds(int16_t x, int16_t y, int16_t w, int16_t h) {
     _x = x;
     _y = y;
     _w = w;
     _h = h;
+    return *this;
 }
 
-void CustomButton::setFocused(bool focused) {
+CustomButton& CustomButton::setFocused(bool focused) {
     _focused = focused;
+    return *this;
 }
 
 bool CustomButton::isFocused() const {
     return _focused;
 }
 
-void CustomButton::setPressed(bool pressed) {
+CustomButton& CustomButton::setPressed(bool pressed) {
     _pressed = pressed;
+    return *this;
 }
 
 bool CustomButton::isPressed() const {
     return _pressed;
 }
 
-void CustomButton::setEnabled(bool enabled) {
+CustomButton& CustomButton::setEnabled(bool enabled) {
     _enabled = enabled;
+    return *this;
 }
 
 bool CustomButton::isEnabled() const {

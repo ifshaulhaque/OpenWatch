@@ -5,18 +5,18 @@
 
 class CustomButton {
 public:
-    CustomButton(int16_t x, int16_t y, int16_t w, int16_t h, const char* label);
+    
 
-    void setLabel(const char* label);
-    void setBounds(int16_t x, int16_t y, int16_t w, int16_t h);
+    CustomButton& setLabel(const char* label);
+    CustomButton& setBounds(int16_t x, int16_t y, int16_t w, int16_t h);
 
-    void setFocused(bool focused);
+    CustomButton& setFocused(bool focused);
     bool isFocused() const;
 
-    void setPressed(bool pressed);
+    CustomButton& setPressed(bool pressed);
     bool isPressed() const;
 
-    void setEnabled(bool enabled);
+    CustomButton& setEnabled(bool enabled);
     bool isEnabled() const;
 
     // Optional: call on touch/point input to check if coordinates hit the button

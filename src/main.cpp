@@ -19,8 +19,8 @@ constexpr int BTN_SELECT_PIN = 1;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-CustomButton btnStart(8, 22, 52, 18, "START");
-CustomButton btnReset(68, 22, 52, 18, "RESET");
+CustomButton btnStart;
+CustomButton btnReset;
 
 int focusedIndex = 0;
 
@@ -52,6 +52,9 @@ void setup() {
         Serial.println("SSD1306 allocation failed");
         for (;;) {}
     }
+
+    btnStart.setBounds(8, 22, 52, 18).setLabel("START");
+    btnReset.setBounds(68, 22, 52, 18).setLabel("RESET");
 
     updateFocus();
     renderUI();
