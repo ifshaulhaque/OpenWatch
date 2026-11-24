@@ -3,6 +3,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "CustomButton.hpp"
+#include "CustomBatteryBar.hpp"
 
 constexpr int SCREEN_WIDTH = 128;
 constexpr int SCREEN_HEIGHT = 64;
@@ -21,8 +22,10 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 CustomButton btnStart;
 CustomButton btnReset;
+CustomBatteryBar batteryBar;
 
 int focusedIndex = 0;
+uint8_t batteryPercentage = 100;
 
 void updateFocus() {
     btnStart.setFocused(focusedIndex == 0);
@@ -36,6 +39,7 @@ void renderUI() {
     display.setCursor(8, 6);
     display.print("Controls");
 
+    batteryBar.setPercentage(batteryPercentage-=10).draw(display);
     btnStart.draw(display);
     btnReset.draw(display);
 
@@ -53,6 +57,7 @@ void setup() {
         for (;;) {}
     }
 
+    batteryBar.setBounds(8, 44).setPercentage(100);
     btnStart.setBounds(8, 22, 52, 18).setLabel("START");
     btnReset.setBounds(68, 22, 52, 18).setLabel("RESET");
 
