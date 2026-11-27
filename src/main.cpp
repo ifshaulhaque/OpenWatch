@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <time.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -25,6 +26,54 @@ CustomTextView am_pm;
 CustomTextView countryCode;
 CustomTextView date;
 
+uint32_t lastTickMs = 0;
+
+void seedInitialTime(int year, int month, int day, int hour, int min, int sec) {
+    setenv("TZ", "IST-5:30", 1);
+    tzset();
+
+    tm t = {};
+    t.tm_year = year - 1900;
+    t.tm_mon  = month - 1;
+    t.tm_mday = day;
+    t.tm_hour = hour;
+    t.tm_min  = min;
+    t.tm_sec  = sec;
+
+    time_t epoch = mktime(&t);
+    timeval tv = { .tv_sec = epoch, .tv_usec = 0 };
+    settimeofday(&tv, nullptr);
+}
+
+void renderTimeDate(const tm& timeinfo) {
+    char hmBuf[8];
+    char secBuf[4];
+    char dateBuf[12];
+
+    snprintf(hmBuf, sizeof(hmBuf), "%02d:%02d ", timeinfo.tm_hour, timeinfo.tm_min);
+    snprintf(secBuf, sizeof(secBuf), "%02d", timeinfo.tm_sec);
+    snprintf(dateBuf, sizeof(dateBuf), "%02d-%02d-%04d",
+             timeinfo.tm_mday,
+             timeinfo.tm_mon + 1,
+             timeinfo.tm_year + 1900);
+
+    const char* period = (timeinfo.tm_hour >= 12) ? "PM" : "AM";
+
+    am_pm.setText(period)
+      .draw(display);
+
+    mTime.setText(hmBuf)
+      .draw(display);
+
+    seconds.setText(secBuf)
+      .draw(display);
+
+    date.setText(dateBuf)
+      .draw(display);
+
+    display.display();
+};
+
 void setup() {
     Serial.begin(115200);
 
@@ -33,6 +82,8 @@ void setup() {
         Serial.println("SSD1306 allocation failed");
         for (;;) {}
     }
+
+    seedInitialTime(2026, 9, 26, 23, 59, 37);
 
     display.ssd1306_command(SSD1306_SETCONTRAST);
     display.ssd1306_command(30);
@@ -52,7 +103,7 @@ void setup() {
       .setText("19:48 ")
       .draw(display);
 
-    seconds.setFollowCursor(false)
+    seconds.setCursor(95, 40)
       .setFontFamily(&tt_lakes_neue_trial_black8pt7b)
       .setText("58")
       .draw(display);
@@ -61,7 +112,7 @@ void setup() {
       .setText("IND")
       .draw(display);
     
-    date.setCursor(80, 56)
+    date.setCursor(65, 56)
       .setText("26-11-2026")
       .draw(display);
 
@@ -69,5 +120,13 @@ void setup() {
 }
 
 void loop() {
-    
+    uint32_t now = millis();
+    if (now - lastTickMs >= 1000) {
+        lastTickMs = now;
+
+        tm timeinfo;
+        if (getLocalTime(&timeinfo)) {
+            renderTimeDate(timeinfo);
+        }
+    }
 }

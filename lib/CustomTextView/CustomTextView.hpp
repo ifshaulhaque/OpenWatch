@@ -19,16 +19,15 @@ class CustomTextView {
 
         CustomTextView& setFontFamily(const GFXfont* font);
 
-        CustomTextView& setFollowCursor(bool followCursor);
-
         void draw(Adafruit_GFX& gfx);
         
     private:
         int16_t _x;
         int16_t _y;
-        bool _followCursor = true;
         String _text;
         const GFXfont* _font = nullptr;
         int8_t _size = 1;
         int8_t _textColor = SSD1306_WHITE;
+
+        String _preText;
 };
