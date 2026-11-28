@@ -83,14 +83,14 @@ void setup() {
         for (;;) {}
     }
 
-    seedInitialTime(2026, 9, 26, 23, 59, 37);
+    seedInitialTime(2026, 9, 26, 23, 58, 37);
 
     display.ssd1306_command(SSD1306_SETCONTRAST);
     display.ssd1306_command(30);
 
     display.clearDisplay();
 
-    am_pm.setCursor(4, 4)
+    am_pm.setBounds(4, 4, -1, -1)
       .setText("PM")
       .draw(display);
 
@@ -98,21 +98,21 @@ void setup() {
       .setPercentage(75)
       .draw(display);
 
-    mTime.setCursor(10, 40)
+    mTime.setBounds(-1, -1, 90, 56)
       .setFontFamily(&tt_lakes_neue_trial_black12pt7b)
       .setText("19:48 ")
       .draw(display);
 
-    seconds.setCursor(95, 40)
+    seconds.setBounds(95, 30, -1, -1)
       .setFontFamily(&tt_lakes_neue_trial_black8pt7b)
       .setText("58")
       .draw(display);
 
-    countryCode.setCursor(4, 56)
+    countryCode.setBounds(4, 56, -1, -1)
       .setText("IND")
       .draw(display);
     
-    date.setCursor(65, 56)
+    date.setBounds(-1 , -1, 124, 63)
       .setText("26-11-2026")
       .draw(display);
 
